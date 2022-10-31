@@ -26,14 +26,14 @@ jobs:
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
     - shell: bash
       run: |
-        dotnet build "{{ inputs.soln-name }}.sln" --no-restore --configuration Release
+        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration Release
     - shell: bash
       run: |
-        dotnet test "{{ inputs.soln-name }}.sln" --configuration Release --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
+        dotnet test "${{ inputs.soln-name }}.sln" --configuration Release --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
     - shell: bash
       run: |
-        dotnet publish "{{ inputs.soln-name }}.sln" --configuration Release --no-restore --no-build --output ./publish
+        dotnet publish "${{ inputs.soln-name }}.sln" --configuration Release --no-restore --no-build --output ./publish
     - uses: actions/upload-artifact@v3
       with:
-        name: {{ inputs.soln-name }}
+        name: ${{ inputs.soln-name }}
         path: ./publish
