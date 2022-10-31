@@ -45,4 +45,6 @@ jobs:
       env:
         GH_USERNAME: ${{ secrets.GH_USERNAME }}
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key anyapikey
+      run: >-
+        dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Coultard/index.json"
+        && dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
