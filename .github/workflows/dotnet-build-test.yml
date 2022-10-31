@@ -6,10 +6,12 @@ on:
       soln-name:
         required: true
         type: string
-
-env:
-  BUILD_CONFIGURATION: ${{ secrets.BUILD_CONFIGURATION }}
-  BUILD_VERSION: ${{ secrets.BUILD_VERSION_MAJOR }}.${{ secrets.BUILD_VERSION_MINOR }}.$GITHUB_RUN_NUMBER
+      build-config:
+        required: true
+        type: string
+      build-version:
+        required: true
+        type: string
 
 jobs:
   build-test:
@@ -36,15 +38,15 @@ jobs:
       env:
         BUILD_VERSION: ${{ inputs.build-version }}
       run: |
-        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration $BUILD_CONFIGURATION /p:Version=$BUILD_VERSION /p:AssemblyVersion=$BUILD_VERSION
+        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=${{ inputs.build-version }} /p:AssemblyVersion=${{ inputs.build-version }}
     - name: Dotnet test
       shell: bash
       run: |
-        dotnet test "${{ inputs.soln-name }}.sln" --configuration $BUILD_CONFIGURATION --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
+        dotnet test "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
     - name: Dotnet publish
       shell: bash
       run: |
-        dotnet publish "${{ inputs.soln-name }}.sln" --configuration $BUILD_CONFIGURATION --no-restore --no-build --output ./publish
+        dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
     - name: Artifact publish folder
       uses: actions/upload-artifact@v3
       with:
