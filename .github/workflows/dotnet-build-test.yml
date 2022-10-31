@@ -13,12 +13,15 @@ on:
         required: true
         type: string
 
+env:
+  BUILD_VERSION: 6.0.${{ GITHUB_RUN_NUMBER }}
+
 jobs:
   build-test:
-
     runs-on: ubuntu-latest
-
     steps:
+    - run: echo build-version="${{ inputs.build-version }}"
+    - run: echo BUILD_VERSIONn="$BUILD_VERSION"
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -38,7 +41,7 @@ jobs:
       env:
         BUILD_VERSION: ${{ inputs.build-version }}
       run: |
-        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=${{ inputs.build-version }} /p:AssemblyVersion=${{ inputs.build-version }}
+        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=$BUILD_VERSION /p:AssemblyVersion=$BUILD_VERSION
     - name: Dotnet test
       shell: bash
       run: |
