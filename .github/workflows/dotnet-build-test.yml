@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  BUILD_VERSION: 6.0.${{ GITHUB_RUN_NUMBER }}
+  BUILD_VERSION: 6.0.$GITHUB_RUN_NUMBER
 
 jobs:
   build-test:
