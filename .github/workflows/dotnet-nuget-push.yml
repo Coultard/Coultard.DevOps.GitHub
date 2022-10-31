@@ -1,0 +1,29 @@
+name: 'dotnet-build-test'
+
+on:
+  workflow_call:
+    inputs:
+      soln-name:
+        required: true
+        type: string
+
+jobs:
+  push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - uses: actions/download-artifact@v3
+      with:
+        name: {{ inputs.soln-name }}
+    - shell: bash
+      env:
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
+        AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
+      name: 'nuget push'
+      run: dotnet nuget push --api-key AzureArtifacts bin/Release/*.nupkg 
