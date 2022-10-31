@@ -20,8 +20,8 @@ jobs:
         dotnet-version: 6.0.x
     - shell: bash
       env:
-        AZURE_PAT: ${{ secrets.AZURE_PAT }}
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
     - shell: bash
