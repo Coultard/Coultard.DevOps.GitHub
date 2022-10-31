@@ -6,6 +6,9 @@ on:
       soln-name:
         required: true
         type: string
+      build-version:
+        required: true
+        type: string
 
 jobs:
   build-test:
