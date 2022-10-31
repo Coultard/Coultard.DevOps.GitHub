@@ -25,6 +25,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+        source-url: https://nuget.pkg.github.com/coultard/index.json
+      env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
@@ -42,12 +45,14 @@ jobs:
     - name: Add Azure endpoint
       shell: bash
       run: >-
-        export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"},{"endpoint":"https://nuget.pkg.github.com/Coultard/index.json", "password":"$GH_PAT"}]}'
+        export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
     - name: Push to Azure
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
-    - name: Push to GitHub1
-      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key anyapikey
-    - name: Push to GitHub2
-      run: >-
-        dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Coultard/index.json"
-        && dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+    - name: Push to GitHub
+        run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols true
+    # - name: Push to GitHub1
+    #   run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key anyapikey
+    # - name: Push to GitHub2
+    #   run: >-
+    #     dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Coultard/index.json"
+    #     && dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}

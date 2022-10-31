@@ -39,7 +39,7 @@ jobs:
       env:
         BUILD_VERSION: ${{ inputs.build-version }}
       run: |
-        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=$BUILD_VERSION /p:AssemblyVersion=$BUILD_VERSION
+        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=${{ inputs.build-config }} /p:AssemblyVersion=${{ inputs.build-config }}
     - name: Dotnet test
       shell: bash
       run: |
