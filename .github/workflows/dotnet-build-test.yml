@@ -31,7 +31,7 @@ jobs:
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
-    - run: BUILD_VERSION="${{ secrets.BUILD_VERSION_MAJOR }}.${{ BUILD_VERSION_MINOR }}.$GITHUB_RUN_NUMBER" && echo $BUILD_VERSION
+    - run: BUILD_VERSION="${{ secrets.BUILD_VERSION_MAJOR }}.${{ secrets.BUILD_VERSION_MINOR }}.$GITHUB_RUN_NUMBER" && echo $BUILD_VERSION
     - run: echo build-version="${{ inputs.build-version }}"
     - run: echo BUILD_VERSIONn="$BUILD_VERSION"
     - name: Dotnet build
