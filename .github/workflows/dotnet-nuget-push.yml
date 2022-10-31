@@ -27,5 +27,4 @@ jobs:
       env:
         AZURE_PAT: ${{ secrets.AZURE_PAT }}
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-      name: 'nuget push'
       run: dotnet nuget push --api-key AzureNuGetV3 bin/Release/*.nupkg 
