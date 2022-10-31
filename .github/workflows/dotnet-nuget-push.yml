@@ -32,6 +32,10 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-nugets
+    - name: Delete old nuget packages
+      run: find . -type f -name '*.1.0.0.nupkg' -exec rm {} +
+    - name: List nuget packages
+      run: find . -name '*.nupkg' -type f
     - name: Add Azure credential provider
       shell: bash
       run: >-
