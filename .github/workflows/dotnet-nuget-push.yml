@@ -53,4 +53,4 @@ jobs:
     - name: Push to Azure
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
     - name: Push to GitHub
-      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols true
+      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols
