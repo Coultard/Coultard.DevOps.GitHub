@@ -18,12 +18,14 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - uses: actions/download-artifact@v3
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
       with:
-        name: ${{ inputs.soln-name }}
-    - shell: bash
+        name: ${{ inputs.soln-name }}-nugets
+    - name: Nuget push
+      shell: bash
       env:
         AZURE_PAT: ${{ secrets.AZURE_PAT }}
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
       name: 'nuget push'
-      run: dotnet nuget push --api-key AzureArtifacts bin/Release/*.nupkg 
+      run: dotnet nuget push --api-key AzureNuGetV3 bin/Release/*.nupkg 

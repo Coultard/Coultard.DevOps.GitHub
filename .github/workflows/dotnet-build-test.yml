@@ -18,22 +18,32 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - shell: bash
+    - name: Dotnet restore
+      shell: bash
       env:
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
         AZURE_PAT: ${{ secrets.AZURE_PAT }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
-    - shell: bash
+    - name: Dotnet build
+      shell: bash
       run: |
         dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration Release
-    - shell: bash
+    - name: Dotnet test
+      shell: bash
       run: |
         dotnet test "${{ inputs.soln-name }}.sln" --configuration Release --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
-    - shell: bash
+    - name: Dotnet publish
+      shell: bash
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration Release --no-restore --no-build --output ./publish
-    - uses: actions/upload-artifact@v3
+    - name: Artifact publish folder
+      uses: actions/upload-artifact@v3
       with:
-        name: ${{ inputs.soln-name }}
+        name: ${{ inputs.soln-name }}-publish
         path: ./publish
+    - name: Artifact nuget packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nugets
+        path: '**/*.nupkg'
