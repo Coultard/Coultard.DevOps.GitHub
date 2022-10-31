@@ -37,6 +37,9 @@ jobs:
       run: >-
         export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
     - name: Push to Azure
+      env:
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
+        AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
     - name: Nuget push
       shell: bash
