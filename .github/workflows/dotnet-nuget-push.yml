@@ -24,7 +24,7 @@ jobs:
         name: ${{ inputs.soln-name }}-nugets
     - name: Add Azure credential provider
       shell: bash
-      run: |
+      run: >-
         mkdir -p artifacts-credprovider
         && cd artifacts-credprovider
         && wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
