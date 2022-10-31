@@ -1,0 +1,20 @@
+name: 'git-sync'
+
+on:
+  workflow_call:
+    inputs:
+      soln-name:
+        required: true
+        type: string
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set git config
+      run: git config --global user.email ${{ secrets.GIT_EMAIL }} && git config --global user.name ${{ secrets.GIT_USERNAME }} && git config --global --list
+    - name: thing
+      env:
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
+      run: git push --prune --verbose https://$AZURE_PAT@dev.azure.com/${{ inputs.soln-name }}/${{ inputs.soln-name }}/_git/${{ inputs.soln-name }} "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
+    
