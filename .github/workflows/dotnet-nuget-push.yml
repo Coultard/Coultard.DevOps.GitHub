@@ -49,10 +49,4 @@ jobs:
     - name: Push to Azure
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
     - name: Push to GitHub
-        run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols true
-    # - name: Push to GitHub1
-    #   run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key anyapikey
-    # - name: Push to GitHub2
-    #   run: >-
-    #     dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Coultard/index.json"
-    #     && dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols true
