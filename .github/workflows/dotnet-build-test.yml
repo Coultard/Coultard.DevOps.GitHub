@@ -57,12 +57,12 @@ jobs:
         name: ${{ inputs.soln-name }}-nugets
         path: '**/*.nupkg'
     - name: Create tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{ inputs.build-config }}',
-              sha: context.sha
-            })
+      uses: actions/github-script@v5
+      with:
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/${{ inputs.build-config }}',
+            sha: context.sha
+          })
