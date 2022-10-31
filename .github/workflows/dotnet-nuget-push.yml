@@ -38,12 +38,11 @@ jobs:
         export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
     - name: Push to Azure
       env:
-        AZURE_PAT: ${{ secrets.AZURE_PAT }}
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
-    - name: Nuget push
-      shell: bash
+    - name: Push to GitHub
       env:
-        AZURE_PAT: ${{ secrets.AZURE_PAT }}
-        AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-      run: dotnet nuget push --api-key AzureNuGetV3 bin/Release/*.nupkg 
+        GH_USERNAME: ${{ secrets.GH_USERNAME }}
+        GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key anyapikey
