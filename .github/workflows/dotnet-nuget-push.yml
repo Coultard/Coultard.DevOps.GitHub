@@ -22,6 +22,22 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-nugets
+    - name: Add Azure credential provider
+      shell: bash
+      run: |
+        mkdir -p artifacts-credprovider
+        && cd artifacts-credprovider
+        && wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
+        && cd ../
+    - name: Set NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED
+      shell: bash
+      run: export NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED=true
+    - name: Add Azure endpoint
+      shell: bash
+      run: >-
+        export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
+    - name: Push to Azure
+      run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
     - name: Nuget push
       shell: bash
       env:
