@@ -22,4 +22,4 @@ jobs:
     - name: Azure push
       run: git push --prune --verbose https://${{ secrets.AZURE_PAT }}@dev.azure.com/coultard/${{ inputs.scm-project-name }}/_git/${{ inputs.soln-name }} "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
     - name: GitLab push
-      run: git push --prune --verbose https://oauth2:${{ secrets.GITLAB_PAT }}@gitlab.com/c7093/${{ inputs.scm-project-name }}/${{ inputs.soln-name }}.git "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"'
+      run: git push --prune --verbose https://oauth2:${{ secrets.GITLAB_PAT }}@gitlab.com/c7093/${{ inputs.scm-project-name }}/${{ inputs.soln-name }}.git "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
