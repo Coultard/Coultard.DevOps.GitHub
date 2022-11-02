@@ -1,4 +1,4 @@
-name: 'dotnet-build-test'
+name: dotnet-build-test
 
 on:
   workflow_call:
