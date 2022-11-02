@@ -15,15 +15,10 @@ on:
 
 jobs:
   build-test:
+
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    
     - name: Dotnet restore
       shell: bash
       env:
@@ -33,7 +28,9 @@ jobs:
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
-    - run: echo build-version="${{ inputs.build-version }}"
+    
+    - name: Build version
+      run: echo build-version="${{ inputs.build-version }}"
     
     - name: Dotnet build
       shell: bash

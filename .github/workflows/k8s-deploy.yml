@@ -10,9 +10,6 @@ on:
 jobs:
   docker-build-publish:
     runs-on: self-hosted
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Download artifacts

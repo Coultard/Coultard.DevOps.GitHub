@@ -8,6 +8,7 @@ on:
         type: string
 
 env:
+  NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
   AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
   AZURE_PAT: ${{ secrets.AZURE_PAT }}
   GH_USERNAME: ${{ secrets.GH_USERNAME }}
@@ -19,16 +20,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        source-url: https://nuget.pkg.github.com/coultard/index.json
-      env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
