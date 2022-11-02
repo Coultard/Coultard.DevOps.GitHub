@@ -20,13 +20,15 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.soln-name }}-publish
+          path: publish
+    
+      - name: List downloaded files
+        run: ls -R
+        working-directory: publish
 
       - name: Set image name env var
         run:  >-
