@@ -25,6 +25,9 @@ jobs:
         run: ls -R
       
       # Deploy using kubectl
-      - kubectl create namespace ${{ secrets.K8S_NAMESPACE }} || true
-      - kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
-      - kubectl apply -f k8s
+      - name: Create amespace if not exists
+        run: kubectl create namespace ${{ secrets.K8S_NAMESPACE }} || true
+      - name: Set context
+        run: kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
+      - name: Apply manifests
+        run: kubectl apply -f k8s
