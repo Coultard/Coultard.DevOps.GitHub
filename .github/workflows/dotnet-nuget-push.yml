@@ -21,6 +21,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -28,14 +29,18 @@ jobs:
         source-url: https://nuget.pkg.github.com/coultard/index.json
       env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-nugets
+    
     - name: Delete old nuget packages
       run: find . -type f -name '*.1.0.0.nupkg' -exec rm {} +
+    
     - name: List nuget packages
       run: find . -name '*.nupkg' -type f
+    
     - name: Add Azure credential provider
       shell: bash
       run: >-
@@ -43,14 +48,18 @@ jobs:
         && cd artifacts-credprovider
         && wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
         && cd ../
+    
     - name: Set NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED
       shell: bash
       run: export NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED=true
+    
     - name: Add Azure endpoint
       shell: bash
       run: >-
         export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
+    
     - name: Push to Azure
       run: dotnet nuget push **/*.nupkg --source AzureNuGetV3 --skip-duplicate --api-key anyapikey
+    
     - name: Push to GitHub
       run: dotnet nuget push **/*.nupkg --source GitHubNuGetV3 --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols
