@@ -28,3 +28,5 @@ jobs:
         run: kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
       - name: Apply manifests
         run: kubectl apply -f k8s
+      - name: List pods
+        run: date && kubectl get pods
