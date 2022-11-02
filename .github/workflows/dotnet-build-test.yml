@@ -18,10 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    
     - name: Dotnet restore
       shell: bash
       env:
@@ -32,30 +34,40 @@ jobs:
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
     - run: echo build-version="${{ inputs.build-version }}"
+    
     - name: Dotnet build
       shell: bash
       env:
         BUILD_VERSION: ${{ inputs.build-version }}
       run: |
         dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=${{ inputs.build-version }} /p:AssemblyVersion=${{ inputs.build-version }}
+    
     - name: Dotnet test
       shell: bash
       run: |
         dotnet test "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --test-adapter-path:. --filter "FullyQualifiedName!~IntegTests&FullyQualifiedName!~TestBase" --logger:"junit;LogFilePath=../../test-results/{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --diag test-results/test-logs.txt
+    
     - name: Dotnet publish
       shell: bash
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
+    
+    - name: Copy Docker files if exist to publish folder
+      run: |
+        cp Dockerfile .dockerignore ./publish 2>/dev/null || :
+
     - name: Artifact publish folder
       uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-publish
         path: ./publish
+
     - name: Artifact nuget packages
       uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-nugets
         path: '**/*.nupkg'
+
     - name: Create tag
       uses: actions/github-script@v5
       with:

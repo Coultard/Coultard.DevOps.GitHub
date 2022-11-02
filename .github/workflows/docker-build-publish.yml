@@ -25,10 +25,13 @@ jobs:
         with:
           name: ${{ inputs.soln-name }}-publish
           path: publish
+      
+      - name: Move Docker files to root
+        run: |
+          mv ./publish/Dockerfile ./publish/.dockerignore ./
     
       - name: List downloaded files
         run: ls -R
-        working-directory: publish
 
       - name: Set image name env var
         run:  >-
