@@ -1,4 +1,4 @@
-name: dotnet-build-test
+name: docker-build-publish
 
 on:
   workflow_call:
