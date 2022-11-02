@@ -1,0 +1,30 @@
+name: k8s-deploy
+
+on:
+  workflow_call:
+    inputs:
+      soln-name:
+        required: true
+        type: string
+
+jobs:
+  docker-build-publish:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.soln-name }}-k8s
+          path: ./k8s
+    
+      - name: List downloaded files
+        run: ls -R
+      
+      # Deploy using kubectl
+      - kubectl create namespace ${{ secrets.K8S_NAMESPACE }} || true
+      - kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
+      - kubectl apply -f k8s

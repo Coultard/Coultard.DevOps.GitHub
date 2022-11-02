@@ -14,7 +14,7 @@ env:
 
 jobs:
   docker-build-publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -54,5 +54,5 @@ jobs:
       - name: docker.io login
         run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 
-      - name: docker.io login
+      - name: docker push
         run: docker push $DOCKER_USERNAME/$DOCKER_REPONAME:$IMAGE_NAME

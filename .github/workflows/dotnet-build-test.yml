@@ -15,7 +15,7 @@ on:
 
 jobs:
   build-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
     
@@ -51,6 +51,12 @@ jobs:
       shell: bash
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
+
+    - name: Artifact nuget packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nugets
+        path: '**/*.nupkg'
     
     - name: Copy Docker files if exist to publish folder
       run: |
@@ -62,11 +68,11 @@ jobs:
         name: ${{ inputs.soln-name }}-publish
         path: ./publish
 
-    - name: Artifact nuget packages
+    - name: Artifact k8s folder
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ inputs.soln-name }}-nugets
-        path: '**/*.nupkg'
+        name: ${{ inputs.soln-name }}-k8s
+        path: ./k8s
 
     - name: Create tag
       uses: actions/github-script@v5
