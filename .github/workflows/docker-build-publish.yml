@@ -6,6 +6,9 @@ on:
       soln-name:
         required: true
         type: string
+      docker-name:
+        required: true
+        type: string
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -30,26 +33,17 @@ jobs:
       - name: List downloaded files
         run: ls -R
 
-      - name: Set image name env var
-        run:  >-
-          SOLN_NAME_LOWER=$(echo ${{ inputs.soln-name }} | tr "[:upper:]" "[:lower:]") 
-          && echo SOLN_NAME_LOWER="$SOLN_NAME_LOWER"
-          && echo "IMAGE_NAME=$(echo "$SOLN_NAME_LOWER" | tr . -)" >> $GITHUB_ENV
-
-      - name: Test image name env var
-        run: echo IMAGE_NAME="$IMAGE_NAME"
-
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME --progress=plain
+        run: docker build . --file Dockerfile --tag ${{ inputs.docker-name }} --progress=plain
 
       - name: List Docker images
-        run: docker images $IMAGE_NAME
+        run: docker images ${{ inputs.docker-name }}
 
       - name: Tag image
-        run: docker tag $IMAGE_NAME $DOCKER_USERNAME/$DOCKER_REPONAME:$IMAGE_NAME
+        run: docker tag ${{ inputs.docker-name }} $DOCKER_USERNAME/$DOCKER_REPONAME:${{ inputs.docker-name }}
       
       - name: docker.io login
         run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 
       - name: docker push
-        run: docker push $DOCKER_USERNAME/$DOCKER_REPONAME:$IMAGE_NAME
+        run: docker push $DOCKER_USERNAME/$DOCKER_REPONAME:${{ inputs.docker-name }}

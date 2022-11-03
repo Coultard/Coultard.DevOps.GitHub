@@ -6,6 +6,9 @@ on:
       soln-name:
         required: true
         type: string
+      docker-name:
+        required: true
+        type: string
 
 jobs:
   docker-build-publish:
@@ -28,5 +31,7 @@ jobs:
         run: kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
       - name: Apply manifests
         run: kubectl apply -f k8s
+      - name: Restart pod
+        run: kubectl rollout restart deployment/${{ inputs.docker-name }}
       - name: List pods
         run: date && kubectl get pods
