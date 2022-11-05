@@ -9,12 +9,28 @@ on:
       docker-name:
         required: true
         type: string
+      scm-project-name:
+        required: true
+        type: string
 
 jobs:
   docker-build-publish:
     runs-on: self-hosted
 
     steps:
+
+      # Get k8s folder from S3
+      - name: Set folder path env var
+        run:  >-
+          SCM_PROJECT_NAME_LOWER=$(echo ${{ inputs.scm-project-name }} | tr "[:upper:]" "[:lower:]") 
+          && echo SCM_PROJECT_NAME_LOWER="$SCM_PROJECT_NAME_LOWER"
+          && echo "AWS_S3_PATH=$(echo "$SCM_PROJECT_NAME_LOWER/${{ inputs.soln-name }}" | tr . -)" >> $GITHUB_ENV
+      - name: Test S3 path env var
+        run: echo "AWS_S3_PATH=$AWS_S3_PATH"
+      - name: Download from S3
+        run: aws s3 cp "$AWS_S3_PATH" ./k8s --recursive
+
+      # Download artifacts
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -22,7 +38,7 @@ jobs:
           path: ./k8s
     
       - name: List downloaded files
-        run: ls -R
+        run: ls -R ./k8s
       
       # Deploy using kubectl
       - name: Create amespace if not exists
