@@ -47,3 +47,6 @@ jobs:
 
       - name: docker push
         run: docker push $DOCKER_USERNAME/$DOCKER_REPONAME:${{ inputs.docker-name }}
+
+      - name: Clean up Docker images
+        run: docker rmi $(docker images -f dangling=true -q) || true
