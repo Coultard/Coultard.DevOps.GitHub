@@ -28,7 +28,7 @@ jobs:
       - name: Test S3 path env var
         run: echo "AWS_S3_PATH=$AWS_S3_PATH"
       - name: Download from S3
-        run: aws s3 cp "$AWS_S3_PATH" ./k8s --recursive
+        run: aws s3 cp "s3://$AWS_S3_PATH/k8s" ./k8s --recursive
 
       # Download artifacts
       - name: Download artifacts
