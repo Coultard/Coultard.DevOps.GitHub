@@ -24,7 +24,7 @@ jobs:
         run:  >-
           SCM_PROJECT_NAME_LOWER=$(echo ${{ inputs.scm-project-name }} | tr "[:upper:]" "[:lower:]") 
           && echo SCM_PROJECT_NAME_LOWER="$SCM_PROJECT_NAME_LOWER"
-          && echo "AWS_S3_PATH=$(echo "$SCM_PROJECT_NAME_LOWER/${{ inputs.soln-name }}" | tr . -)" >> $GITHUB_ENV
+          && echo "AWS_S3_PATH=$SCM_PROJECT_NAME_LOWER/${{ inputs.soln-name }}" >> $GITHUB_ENV
       - name: Test S3 path env var
         run: echo "AWS_S3_PATH=$AWS_S3_PATH"
       - name: Download from S3
