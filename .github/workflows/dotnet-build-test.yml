@@ -29,7 +29,13 @@ jobs:
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
 
+    - name: Check if secure atirfact exists
+      uses: xSAVIKx/artifact-exists-action@v0
+      with:
+        name: ${{ inputs.soln-name }}-secure
+
     - name: Download secure folder
+      if: steps.check_coverage_artifact.outputs.exists == 'true'
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-secure
