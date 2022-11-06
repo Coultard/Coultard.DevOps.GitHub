@@ -48,5 +48,17 @@ jobs:
       - name: docker push
         run: docker push $DOCKER_USERNAME/$DOCKER_REPONAME:${{ inputs.docker-name }}
 
+      - name: Stop all containers
+        run: docker container stop $(docker container ls -aq) || true
+
+      - name: Remove any stopped containers and all unused images
+        run: echo y | docker system prune --volumes || true
+
+      - name: Remove dangling images
+        run: docker images -f dangling=true || true
+
+      - name: Remove all exited containers
+        run: docker rm $(docker ps -a -f status=exited -q) || true
+
       - name: Clean up Docker images
         run: docker rmi $(docker images -f dangling=true -q) || true
