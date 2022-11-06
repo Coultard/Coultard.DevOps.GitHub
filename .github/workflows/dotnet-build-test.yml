@@ -29,6 +29,12 @@ jobs:
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
 
+    - name: Download secure folder
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-secure
+        path: ./secure
+
     - name: List files
       run: ls -R ./
     
