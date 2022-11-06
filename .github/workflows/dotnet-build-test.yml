@@ -28,6 +28,9 @@ jobs:
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
+
+    - name: List files
+      run: ls -R ./
     
     - name: Build version
       run: echo build-version="${{ inputs.build-version }}"
@@ -54,6 +57,10 @@ jobs:
       with:
         name: ${{ inputs.soln-name }}-nugets
         path: '**/*.nupkg'
+    
+    - name: Copy secure folder if exist to publish folder
+      run: |
+        cp -Rf ./secure ./publish 2>/dev/null || :
     
     - name: Copy Docker files if exist to publish folder
       run: |

@@ -37,7 +37,7 @@ jobs:
           name: ${{ inputs.soln-name }}-k8s
           path: ./k8s
     
-      - name: List downloaded files
+      - name: List k8s files
         run: ls -R ./k8s
       
       # Deploy using kubectl
