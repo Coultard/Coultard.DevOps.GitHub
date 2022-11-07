@@ -27,10 +27,8 @@ jobs:
           rm -rf ./.??* || true
           ls -la ./
 
-      - name: Remove old images
-        run: |
-          docker rm $(docker stop $(docker ps -a -q --filter ancestor=docker.io/${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPONAME }}:${{ inputs.docker-name }} --format="{{.ID}}"))
-          && docker rm $(docker stop $(docker ps -a -q --filter ancestor=${{ inputs.docker-name }} --format="{{.ID}}")) || true
+      - name: Docker prune
+        run: echo y | docker system prune --volumes
 
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -63,11 +61,8 @@ jobs:
       - name: Stop all containers
         run: docker container stop $(docker container ls -aq) || true
 
-      - name: Remove dangling images
-        run: docker images -f dangling=true || true
-
       - name: Remove all exited containers
         run: docker rm $(docker ps -a -f status=exited -q) || true
 
-      - name: Clean up Docker images
+      - name: Remove dangling images
         run: docker rmi $(docker images -f dangling=true -q) || true
