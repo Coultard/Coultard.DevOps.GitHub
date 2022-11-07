@@ -27,7 +27,7 @@ jobs:
         GH_USERNAME: ${{ secrets.GH_USERNAME }}
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore /p:Version=${{ inputs.build-version }}
+        echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
 
     - name: Check if secure atirfact exists
       uses: xSAVIKx/artifact-exists-action@v0
@@ -60,7 +60,7 @@ jobs:
     - name: Dotnet publish
       shell: bash
       run: |
-        dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish /p:Version=${{ inputs.build-version }}
+        dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
 
     - name: Artifact nuget packages
       uses: actions/upload-artifact@v3

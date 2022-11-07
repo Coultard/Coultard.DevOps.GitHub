@@ -34,7 +34,7 @@ jobs:
         run: ls -R
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ inputs.docker-name }} --progress=plain
+        run: docker build --no-cache . --file Dockerfile --tag ${{ inputs.docker-name }} --progress=plain
 
       - name: List Docker images
         run: docker images ${{ inputs.docker-name }}
@@ -50,9 +50,6 @@ jobs:
 
       - name: Stop all containers
         run: docker container stop $(docker container ls -aq) || true
-
-      - name: Remove any stopped containers and all unused images
-        run: echo y | docker system prune --volumes || true
 
       - name: Remove dangling images
         run: docker images -f dangling=true || true
