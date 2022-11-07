@@ -18,7 +18,15 @@ jobs:
 
     runs-on: self-hosted
     steps:
+    - name: Clean working folder
+      run: |
+        ls -la ./
+        rm -rf ./* || true
+        rm -rf ./.??* || true
+        ls -la ./
+
     - uses: actions/checkout@v3
+
     - name: Dotnet restore
       shell: bash
       env:
@@ -42,7 +50,7 @@ jobs:
         path: ./secure
 
     - name: List files
-      run: ls -R ./
+      run: pwd && ls -R
     
     - name: Build version
       run: echo build-version="${{ inputs.build-version }}"

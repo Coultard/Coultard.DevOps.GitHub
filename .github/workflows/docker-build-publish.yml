@@ -20,6 +20,18 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Clean working folder
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
+
+      - name: Remove old images
+        run: |
+          docker rm $(docker stop $(docker ps -a -q --filter ancestor=docker.io/${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPONAME }}:${{ inputs.docker-name }} --format="{{.ID}}")) || true
+          && docker rm $(docker stop $(docker ps -a -q --filter ancestor=${{ inputs.docker-name }} --format="{{.ID}}")) || true
+
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -31,7 +43,7 @@ jobs:
           mv ./publish/Dockerfile ./publish/.dockerignore ./
     
       - name: List downloaded files
-        run: ls -R
+        run: pwd && ls -R
 
       - name: Build the Docker image
         run: docker build --no-cache . --file Dockerfile --tag ${{ inputs.docker-name }} --progress=plain
