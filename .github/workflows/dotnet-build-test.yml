@@ -50,7 +50,7 @@ jobs:
     - name: Dotnet build
       shell: bash
       run: |
-        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:BUILD_VERSION=${{ inputs.build-version }}
+        dotnet build "${{ inputs.soln-name }}.sln" --no-restore --configuration ${{ inputs.build-config }} /p:Version=${{ inputs.build-version }}
     
     - name: Dotnet test
       shell: bash
