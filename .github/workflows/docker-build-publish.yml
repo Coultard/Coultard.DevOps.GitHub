@@ -29,7 +29,7 @@ jobs:
 
       - name: Remove old images
         run: |
-          docker rm $(docker stop $(docker ps -a -q --filter ancestor=docker.io/${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPONAME }}:${{ inputs.docker-name }} --format="{{.ID}}")) || true
+          docker rm $(docker stop $(docker ps -a -q --filter ancestor=docker.io/${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPONAME }}:${{ inputs.docker-name }} --format="{{.ID}}"))
           && docker rm $(docker stop $(docker ps -a -q --filter ancestor=${{ inputs.docker-name }} --format="{{.ID}}")) || true
 
       - name: Download artifacts
