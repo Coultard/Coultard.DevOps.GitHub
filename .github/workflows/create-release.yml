@@ -1,0 +1,41 @@
+name: create-release
+
+on:
+  workflow_call:
+    inputs:
+      soln-name:
+        required: true
+        type: string
+      build-version:
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.build-version }}
+          release_name: Release ${{ inputs.build-version }}
+          draft: false
+          prerelease: false
+
+      # TODO: Download publish artifact, create zip file and upload it
+
+      # - name: Upload Release Asset
+      #   id: upload-release-asset 
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+      #     asset_path: ./${{ inputs.build-version }}.zip
+      #     asset_name: ${{ inputs.build-version }}.zip
+      #     asset_content_type: application/zip
