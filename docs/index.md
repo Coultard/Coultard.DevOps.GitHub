@@ -2,6 +2,6 @@
 
 This repository contains shared pipeline templates.
 
-[CentOS install instructions](centos-install.md)
+[Build server install instructions](build-server-install.md)
 
 [Configure kubectl](kubectl-configure.md)
