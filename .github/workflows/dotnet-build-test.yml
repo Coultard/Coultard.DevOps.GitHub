@@ -13,12 +13,6 @@ on:
         required: true
         type: string
 
-env:
-  AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-  AZURE_PAT: ${{ secrets.AZURE_PAT }}
-  GH_USERNAME: ${{ secrets.GH_USERNAME }}
-  GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   build-test:
 
@@ -33,25 +27,13 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - name: Add Azure credential provider
-      shell: bash
-      run: >-
-        mkdir -p artifacts-credprovider
-        && cd artifacts-credprovider
-        && wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash
-        && cd ../
-    
-    - name: Set NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED
-      shell: bash
-      run: export NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED=true
-    
-    - name: Add Azure endpoint
-      shell: bash
-      run: >-
-        export VSS_NUGET_EXTERNAL_FEED_ENDPOINTS='{"endpointCredentials": [{"endpoint":"https://pkgs.dev.azure.com/coultard/_packaging/coultard-nuget/nuget/v3/index.json", "password":"$AZURE_PAT"}]}'
-
     - name: Dotnet restore
       shell: bash
+      env:
+        AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
+        AZURE_PAT: ${{ secrets.AZURE_PAT }}
+        GH_USERNAME: ${{ secrets.GH_USERNAME }}
+        GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
 
