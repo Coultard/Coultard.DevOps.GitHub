@@ -34,14 +34,6 @@ jobs:
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: dotnet restore
 
-    # - name: Azure dotnet restore
-    #   shell: bash
-    #   env:
-    #     AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-    #     AZURE_PAT: ${{ secrets.AZURE_PAT }}
-    #   run: |
-    #     echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
-
     - name: Check if secure atirfact exists
       uses: xSAVIKx/artifact-exists-action@v0
       with:
