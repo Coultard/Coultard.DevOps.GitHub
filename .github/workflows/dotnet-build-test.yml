@@ -33,9 +33,10 @@ jobs:
         AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
         AZURE_PAT: ${{ secrets.AZURE_PAT }}
         GH_USERNAME: ${{ secrets.GH_USERNAME }}
-        GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
-        echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
+        dotnet nuget update source GitHubNuGetV3 -u ${{ github.actor }} -p ${{ secrets.GH_PAT }} --store-password-in-clear-text
+        dotnet restore
 
     - name: Check if secure atirfact exists
       uses: xSAVIKx/artifact-exists-action@v0
