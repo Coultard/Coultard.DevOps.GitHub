@@ -25,6 +25,8 @@ jobs:
         rm -rf ./.??* || true
         ls -la ./
 
+    - uses: actions/checkout@v3
+
     - name: Dotnet restore
       shell: bash
       env:
