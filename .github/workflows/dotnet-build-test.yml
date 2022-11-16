@@ -27,15 +27,20 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - name: Dotnet restore
+    - name: GitHub dotnet restore
       shell: bash
       env:
-        AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
-        AZURE_PAT: ${{ secrets.AZURE_PAT }}
         GH_USERNAME: ${{ secrets.GH_USERNAME }}
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
+      run: dotnet restore
+
+    # - name: Azure dotnet restore
+    #   shell: bash
+    #   env:
+    #     AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
+    #     AZURE_PAT: ${{ secrets.AZURE_PAT }}
+    #   run: |
+    #     echo AZURE_PAT="$AZURE_PAT" && echo AZURE_USERNAME="$AZURE_USERNAME" && dotnet restore
 
     - name: Check if secure atirfact exists
       uses: xSAVIKx/artifact-exists-action@v0
