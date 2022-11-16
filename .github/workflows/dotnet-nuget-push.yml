@@ -8,7 +8,6 @@ on:
         type: string
 
 env:
-  NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
   AZURE_USERNAME: ${{ secrets.AZURE_USERNAME }}
   AZURE_PAT: ${{ secrets.AZURE_PAT }}
   GH_USERNAME: ${{ secrets.GH_USERNAME }}
