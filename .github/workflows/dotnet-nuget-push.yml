@@ -24,8 +24,11 @@ jobs:
       with:
         name: ${{ inputs.soln-name }}-nuget
 
-    - name: Move nuget files to root
-      run: mv ./nuget ./
+    # - name: Move nuget files to root
+    #   run: mv ./nuget ./
+
+    - name: List contents of folder
+      run: ls -R ./
     
     - name: Delete old nuget packages
       run: find . -type f -name '*.1.0.0.nupkg' -exec rm {} +
