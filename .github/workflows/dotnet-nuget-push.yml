@@ -22,7 +22,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
-        name: ${{ inputs.soln-name }}-nugets
+        name: ${{ inputs.soln-name }}-nuget
 
     - name: Move nuget files to root
       run: mv ./nuget ./
