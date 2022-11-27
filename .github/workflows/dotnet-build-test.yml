@@ -79,6 +79,9 @@ jobs:
       run: |
         cp -Rf ./secure ./publish 2>/dev/null || :
     
+    - name: List published files
+      run: pwd && ls -R ./publish
+
     - name: Copy Docker files if exist to publish folder
       run: |
         cp Dockerfile .dockerignore ./publish 2>/dev/null || :
