@@ -70,26 +70,10 @@ jobs:
       shell: bash
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
-
-    - name: List nuget packages
-      run: ls -R **/*.nupkg
-
-    - name: Make nuget folder
-      run: mkdir -p nuget
-
-    - name: Copy nuget packages if exist to nuget folder
+    
+    - name: Copy nuget connfig if exist to publish folder
       run: |
-        cp **/*.nupkg ./nuget 2>/dev/null || :
-        cp nuget.config ./nuget
-
-    - name: List contents of nuget folder
-      run: ls -R ./nuget
-
-    - name: Artifact nuget folder
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ inputs.soln-name }}-nuget
-        path: ./nuget
+        cp nuget.config ./publish 2>/dev/null || :
     
     - name: Copy secure folder if exist to publish folder
       run: |
