@@ -71,6 +71,18 @@ jobs:
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
 
+    - name: Copy nuget packages if exist to publish folder
+      run: |
+        mkdir -p nuget
+        cp **/*.nupkg ./nuget 2>/dev/null || :
+        cp nuget.config ./nuget
+
+    - name: Artifact nuget folder
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nuget
+        path: ./nuget
+
     - name: Artifact nuget packages
       uses: actions/upload-artifact@v3
       with:

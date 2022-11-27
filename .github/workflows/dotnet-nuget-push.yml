@@ -23,6 +23,9 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-nugets
+
+    - name: Move nuget files to root
+      run: mv ./nuget ./
     
     - name: Delete old nuget packages
       run: find . -type f -name '*.1.0.0.nupkg' -exec rm {} +
