@@ -82,12 +82,6 @@ jobs:
       with:
         name: ${{ inputs.soln-name }}-nuget
         path: ./nuget
-
-    - name: Artifact nuget packages
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ inputs.soln-name }}-nugets
-        path: '**/*.nupkg'
     
     - name: Copy secure folder if exist to publish folder
       run: |
