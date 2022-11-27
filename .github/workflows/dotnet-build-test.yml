@@ -71,7 +71,7 @@ jobs:
       run: |
         dotnet publish "${{ inputs.soln-name }}.sln" --configuration ${{ inputs.build-config }} --no-restore --no-build --output ./publish
     
-    - name: Copy nuget connfig if exist to publish folder
+    - name: Copy nuget config if exist to publish folder
       run: |
         cp nuget.config ./publish 2>/dev/null || :
     
@@ -85,6 +85,12 @@ jobs:
     - name: Copy Docker files if exist to publish folder
       run: |
         cp Dockerfile .dockerignore ./publish 2>/dev/null || :
+
+    - name: Artifact nuget packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nuget
+        path: '**/*.nupkg'
 
     - name: Artifact publish folder
       uses: actions/upload-artifact@v3

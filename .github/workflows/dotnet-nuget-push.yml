@@ -19,10 +19,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Download artifacts
+    - name: Download publish
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.soln-name }}-publish
+
+    - name: Download nuget
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nuget
 
     - name: List contents of folder
       run: ls -R ./
