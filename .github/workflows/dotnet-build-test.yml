@@ -39,6 +39,7 @@ jobs:
         dotnet restore
 
     - name: Check if secure atirfact exists
+      id: check_coverage_artifact
       uses: xSAVIKx/artifact-exists-action@v0
       with:
         name: ${{ inputs.soln-name }}-secure
