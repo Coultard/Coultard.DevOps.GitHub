@@ -74,22 +74,22 @@ jobs:
     
     - name: Copy nuget config if exist to publish folder
       run: |
-        cp nuget.config ./publish 2>/dev/null || :
+        cp nuget.config ./publish/ 2>/dev/null || :
     
     - name: Copy nuget packages if exist to publish folder
       run: |
-        cp **/*.nupkg ./publish 2>/dev/null || :
+        cp **/*.nupkg ./publish/ 2>/dev/null || :
     
     - name: Copy secure folder if exist to publish folder
       run: |
-        cp -Rf ./secure ./publish 2>/dev/null || :
+        cp -Rf ./secure ./publish/secure/ 2>/dev/null || :
     
     - name: List published files
       run: pwd && ls -R ./publish
 
     - name: Copy Docker files if exist to publish folder
       run: |
-        cp Dockerfile .dockerignore ./publish 2>/dev/null || :
+        cp Dockerfile .dockerignore ./publish/ 2>/dev/null || :
 
     - name: Artifact nuget packages
       uses: actions/upload-artifact@v3
