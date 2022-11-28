@@ -83,13 +83,13 @@ jobs:
     - name: Copy secure folder if exist to publish folder
       run: |
         cp -Rf ./secure ./publish/secure/ 2>/dev/null || :
-    
-    - name: List published files
-      run: pwd && ls -R ./publish
 
     - name: Copy Docker files if exist to publish folder
       run: |
         cp Dockerfile .dockerignore ./publish/ 2>/dev/null || :
+    
+    - name: List published files
+      run: pwd && ls -R ./publish
 
     - name: Artifact nuget packages
       uses: actions/upload-artifact@v3
