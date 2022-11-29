@@ -41,7 +41,7 @@ jobs:
         run: ls -R ./k8s
       
       # Deploy using kubectl
-      - name: Create amespace if not exists
+      - name: Create mamespace if not exists
         run: kubectl create namespace ${{ secrets.K8S_NAMESPACE }} || true
       - name: Set context
         run: kubectl config set-context --current --namespace=${{ secrets.K8S_NAMESPACE }}
