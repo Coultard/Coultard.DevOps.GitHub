@@ -79,12 +79,20 @@ aws --version
 
 Check if it’s there already: dotnet --list-sdks
 
+#### CentOS
+
 Check the version of Centos: cat /etc/centos-releaseNB dotnet vs centos version table
 
 Install library sources: sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
 
 Install SDK: sudo yum install -y dotnet-sdk-6.0
 
+#### Ubuntu
+
+Check the version of Ubuntu: lsb_release -a
+[https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#2004]
+sudo apt-get update && \
+  sudo apt-get install -y dotnet-sdk-6.0
 
 ### Docker:
 
