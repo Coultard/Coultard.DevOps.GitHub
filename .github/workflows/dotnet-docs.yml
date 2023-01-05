@@ -1,0 +1,41 @@
+name: dotnet-build-test
+
+on:
+  workflow_call:
+    inputs:
+      soln-name:
+        required: true
+        type: string
+      build-config:
+        required: true
+        type: string
+      build-version:
+        required: true
+        type: string
+
+jobs:
+  nuget-push:
+    runs-on: self-hosted
+
+    steps:
+    - name: Download publish
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-publish
+
+    - name: Download nuget
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.soln-name }}-nuget
+
+    - name: List contents of folder
+      run: ls -R ./
+
+    - name: Create docs
+      run: >-
+        rm *Tests* && dotnet tool install xmldocmd -g \
+        && export PATH="$PATH:/root/.dotnet/tools" \
+        && xmldocmd ${{ inputs.soln-name }}.dll docs/ \
+        && for f in `ls ${{ inputs.soln-name }}.*.dll`; \
+        do xmldocmd ${f%} docs/; done \
+        && ls ./docs
